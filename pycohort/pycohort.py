@@ -59,7 +59,7 @@ def cohort_preprocess(df):
     df['creation_date'] = pd.to_datetime(df.creation_date)
     df['last_active_month'] = pd.to_datetime(df.last_active_month)
     df.set_index('id', inplace=True)
-    df['CohortGroup'] = df.groupby(level=0)['metric_month'].min().apply(lambda x: x.strftime('%Y-%m'))
+    df['CohortGroup'] = df.groupby(level=0)['metric_month'].min().dt.strftime('%Y-%m')
     df.reset_index(inplace=True)
     cohorts = df.groupby(['CohortGroup', 'metric_month']).agg({'id':pd.Series.nunique})
     cohorts.rename(columns={'id': 'TotalAccounts'}, inplace=True)
